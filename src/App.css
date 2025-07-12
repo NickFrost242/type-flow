@@ -1,38 +1,562 @@
+/* Reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: #1e1e1e; /* VSCode dark background */
+  min-height: 100vh;
+  color: #d4d4d4; /* VSCode default text color */
+}
+
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+}
+
+/* Header styles */
+.header {
+  background: #252526; /* VSCode title bar background */
+  border-bottom: 1px solid #3c3c3c; /* VSCode border color */
+  padding: 1rem 0;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+}
+
+.header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  text-align: center;
+}
+
+.app-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #d4d4d4; /* VSCode default text color */
+  margin-bottom: 0.5rem;
+}
+
+.title-highlight {
+  color: #569cd6; /* VSCode blue accent */
+}
+
+.app-subtitle {
+  font-size: 1.1rem;
+  color: #858585; /* VSCode secondary text */
+  font-weight: 400;
+}
+
+/* Main content */
+.main-content {
+  flex: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  width: 100%;
+}
+
+/* Welcome screen */
+.welcome-screen {
+  text-align: center;
+  background: #252526; /* VSCode panel background */
+  border: 1px solid #3c3c3c; /* VSCode border */
+  border-radius: 8px; /* VSCode border radius */
+  padding: 3rem 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  margin: 2rem auto;
+  max-width: 600px;
+}
+
+.welcome-screen h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: #d4d4d4; /* VSCode default text */
+}
+
+.welcome-screen p {
+  font-size: 1.2rem;
+  color: #858585; /* VSCode secondary text */
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.start-button {
+  background: #0e639c; /* VSCode button blue */
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 4px; /* VSCode button radius */
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(14, 99, 156, 0.3);
+}
+
+.start-button:hover {
+  background: #1177bb; /* VSCode button hover */
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(14, 99, 156, 0.4);
+}
+
+/* Typing test styles */
+.typing-test {
+  background: #252526; /* VSCode panel background */
+  border: 1px solid #3c3c3c; /* VSCode border */
+  border-radius: 8px; /* VSCode border radius */
+  padding: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.test-header {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.stats {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.stat {
+  text-align: center;
+  min-width: 80px;
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.9rem;
+  color: #858585; /* VSCode secondary text */
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.stat-value {
+  display: block;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #d4d4d4; /* VSCode default text */
+}
+
+.complete-button {
+  background: #0e639c; /* VSCode button blue */
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 4px; /* VSCode button radius */
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.complete-button:hover {
+  background: #1177bb; /* VSCode button hover */
+  transform: translateY(-1px);
+}
+
+/* Words display */
+.words-display {
+  background: #1e1e1e; /* VSCode editor background */
+  border-radius: 8px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  min-height: 120px;
+  max-height: 120px;
+  line-height: 1.8;
+  font-size: 1.4rem;
+  border: 1px solid #3c3c3c; /* VSCode border */
+  overflow: hidden;
+  position: relative;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.words-container {
+  position: relative;
+  line-height: 1.8;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100%;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scroll-snap-type: x proximity;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  padding-top: 0;
+  padding-bottom: 0;
+  min-width: 100%;
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  /* Disable text selection and user interaction */
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  pointer-events: none;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.words-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* Enable interaction when typing is active */
+.words-container.typing-active {
+  pointer-events: auto;
+  user-select: text;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+}
+
+/* Dynamic cursor overlay */
+.cursor-overlay {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 2px;
+  height: 1.8rem; /* Match the line-height */
+  background: #569cd6; /* VSCode cursor color */
+  border-radius: 1px;
+  z-index: 10;
+  animation: cursor-blink 1s infinite;
+  pointer-events: none;
+  box-shadow: 0 0 4px rgba(86, 156, 214, 0.6);
+  transition: left 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+
+
+.word {
+  display: inline-block;
+  margin-right: 0.25rem;
+}
+
+.word-space {
+  margin-right: 0.25rem;
+}
+
+.char {
+  display: inline-block;
+  transition: all 0.1s ease;
+  position: relative;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+}
+
+.char.completed {
+  color: #4ec9b0; /* VSCode green for completed */
+  font-weight: 400;
+}
+
+.char.typed {
+  color: #4ec9b0; /* VSCode green for correct typed characters */
+  font-weight: 400;
+}
+
+.char.current-char {
+  color: #d4d4d4; /* VSCode default text */
+  font-weight: 600;
+  text-shadow: 0 0 2px rgba(86, 156, 214, 0.3);
+}
+
+.char.error-char {
+  color: #f44747; /* VSCode error red */
+  font-weight: 600;
+  text-shadow: 0 0 2px rgba(244, 71, 71, 0.3);
+  animation: error-shake 0.3s ease-in-out;
+}
+
+@keyframes error-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-2px); }
+  75% { transform: translateX(2px); }
+}
+
+
+
+@keyframes cursor-blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0.7;
+  }
+}
+
+/* Input container */
+.input-container {
+  margin-bottom: 1.5rem;
+}
+
+.typing-input {
+  width: 100%;
+  padding: 1rem 1.5rem;
+  font-size: 1.1rem;
+  border: 2px solid #e9ecef;
+  border-radius: 15px;
+  outline: none;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.typing-input:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.typing-input:disabled {
+  background: #f8f9fa;
+  cursor: not-allowed;
+}
+
+.test-instructions {
+  text-align: center;
+  color: #858585; /* VSCode secondary text */
+  font-size: 0.9rem;
+}
+
+/* Results styles */
+.results {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.results-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.results-header h2 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.results-header p {
+  font-size: 1.1rem;
+  color: #666;
+}
+
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.result-card {
+  background: white;
+  border-radius: 15px;
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.result-card:hover {
+  transform: translateY(-5px);
+}
+
+.result-card.primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.result-card.primary .result-label,
+.result-card.primary .result-rating {
+  color: rgba(255, 255, 255, 0.9);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.result-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: inherit;
+}
+
+.result-label {
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.result-rating {
+  font-size: 0.8rem;
+  color: #28a745;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.results-actions {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.new-test-button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.new-test-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+}
+
+.results-tips {
+  background: #f8f9fa;
+  border-radius: 15px;
+  padding: 1.5rem;
+  border-left: 4px solid #667eea;
+}
+
+.results-tips h3 {
+  margin-bottom: 1rem;
+  color: #333;
+  font-size: 1.2rem;
+}
+
+.results-tips ul {
+  list-style: none;
+  padding: 0;
+}
+
+.results-tips li {
+  padding: 0.5rem 0;
+  color: #666;
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.results-tips li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #28a745;
+  font-weight: bold;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .main-content {
+    padding: 1rem;
   }
-  to {
-    transform: rotate(360deg);
+  
+  .header-content {
+    padding: 0 1rem;
+  }
+  
+  .app-title {
+    font-size: 2rem;
+  }
+  
+  .welcome-screen {
+    padding: 2rem 1rem;
+    margin: 1rem;
+  }
+  
+  .welcome-screen h2 {
+    font-size: 2rem;
+  }
+  
+  .typing-test {
+    padding: 1.5rem;
+  }
+  
+  .test-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .stats {
+    justify-content: center;
+    gap: 1rem;
+  }
+  
+  .stat {
+    min-width: 60px;
+  }
+  
+  .stat-value {
+    font-size: 1.5rem;
+  }
+  
+  .words-display {
+    padding: 1.5rem;
+    font-size: 1.2rem;
+    min-height: 100px;
+    max-height: 100px;
+  }
+  
+  .results-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+  }
+  
+  .result-value {
+    font-size: 2rem;
+  }
+  
+  .results {
+    padding: 1.5rem;
+  }
+  
+  .results-header h2 {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats {
+    gap: 0.5rem;
+  }
+  
+  .stat {
+    min-width: 50px;
+  }
+  
+  .stat-value {
+    font-size: 1.3rem;
+  }
+  
+  .words-display {
+    padding: 1rem;
+    font-size: 1.1rem;
+    min-height: 80px;
+    max-height: 80px;
+  }
+  
+  .results-grid {
+    grid-template-columns: 1fr;
   }
 }

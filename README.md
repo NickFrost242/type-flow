@@ -1,46 +1,116 @@
-# Getting Started with Create React App
+# TypeRace - Typing Speed Test
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A modern, responsive typing speed test application built with React and TypeScript that measures your Words Per Minute (WPM) and accuracy in real-time.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- **Continuous Word Stream**: Type through a never-ending stream of random English words
+- **Real-time WPM Calculation**: See your typing speed update as you type
+- **Accuracy Tracking**: Monitor your typing accuracy percentage
+- **Modern UI**: Beautiful, responsive design with smooth animations
+- **Results Analysis**: Detailed breakdown of your performance
+- **Performance Ratings**: Get feedback on your typing level
+- **Mobile Responsive**: Works perfectly on all device sizes
 
-### `npm start`
+## How to Use
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+1. **Start the Test**: Click "Start Typing Test" to begin
+2. **Type the Words**: Type each word as it appears, pressing space after each word
+3. **Monitor Progress**: Watch your WPM, accuracy, and time in real-time
+4. **Complete the Test**: Press ESC or click "Complete Test" when finished
+5. **Review Results**: See your detailed performance metrics
+6. **Try Again**: Take another test to improve your speed
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Performance Metrics
 
-### `npm test`
+The app tracks several key metrics:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **WPM (Words Per Minute)**: Your typing speed
+- **Accuracy**: Percentage of correctly typed words
+- **Time Elapsed**: Total time spent typing
+- **Words Typed**: Total number of words attempted
+- **Correct Words**: Number of words typed correctly
+- **Errors**: Number of mistakes made
 
-### `npm run build`
+## Performance Ratings
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### WPM Ratings:
+- 80+ WPM: Excellent
+- 60-79 WPM: Good
+- 40-59 WPM: Average
+- 20-39 WPM: Below Average
+- <20 WPM: Beginner
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Accuracy Ratings:
+- 98%+: Excellent
+- 95-97%: Good
+- 90-94%: Average
+- 80-89%: Below Average
+- <80%: Needs Improvement
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Getting Started
 
-### `npm run eject`
+### Prerequisites
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- Node.js (version 14 or higher)
+- npm or yarn
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Installation
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd typerace
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+2. Install dependencies:
+```bash
+npm install
+```
 
-## Learn More
+3. Start the development server:
+```bash
+npm start
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+4. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Available Scripts
+
+- `npm start` - Runs the app in development mode
+- `npm run build` - Builds the app for production
+- `npm run eject` - Ejects from Create React App (one-way operation)
+
+## Technology Stack
+
+- **React 19** - Modern React with hooks
+- **TypeScript** - Type-safe JavaScript
+- **CSS3** - Modern styling with gradients and animations
+- **Create React App** - Zero-configuration build tool
+
+## Best Practices Implemented
+
+- **Component Architecture**: Modular, reusable components
+- **Type Safety**: Full TypeScript implementation
+- **Responsive Design**: Mobile-first approach
+- **Accessibility**: Proper focus management and keyboard navigation
+- **Performance**: Optimized rendering and state management
+- **Clean Code**: Well-structured, readable codebase
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- Word list compiled from common English words
+- Design inspired by modern typing test applications
+- Built with best practices for React and TypeScript development

@@ -1,24 +1,57 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
+import TypingTest from './components/TypingTest';
+import Results from './components/Results';
+import Header from './components/Header';
+
+export interface TestResult {
+  wpm: number;
+  accuracy: number;
+  totalWords: number;
+  correctWords: number;
+  timeElapsed: number;
+  errors: number;
+}
 
 function App() {
+  const [isTestActive, setIsTestActive] = useState(false);
+  const [results, setResults] = useState<TestResult | null>(null);
+
+  const startNewTest = () => {
+    setIsTestActive(true);
+    setResults(null);
+  };
+
+  const handleTestComplete = (result: TestResult) => {
+    setIsTestActive(false);
+    setResults(result);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header />
+      <main className="main-content">
+        {!isTestActive && !results && (
+          <div className="welcome-screen">
+            <h2>Welcome to TypeFlow</h2>
+            <p>Test your typing speed with a continuous stream of random words</p>
+            <button className="start-button" onClick={startNewTest}>
+              Start Typing Test
+            </button>
+          </div>
+        )}
+        
+        {isTestActive && (
+          <TypingTest onTestComplete={handleTestComplete} />
+        )}
+        
+        {results && (
+          <Results 
+            results={results} 
+            onStartNewTest={startNewTest}
+          />
+        )}
+      </main>
     </div>
   );
 }
