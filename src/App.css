@@ -227,21 +227,7 @@ body {
   -ms-user-select: text;
 }
 
-/* Dynamic cursor overlay */
-.cursor-overlay {
-  position: absolute;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 2px;
-  height: 1.8rem; /* Match the line-height */
-  background: #569cd6; /* VSCode cursor color */
-  border-radius: 1px;
-  z-index: 10;
-  animation: cursor-blink 1s infinite;
-  pointer-events: none;
-  box-shadow: 0 0 4px rgba(86, 156, 214, 0.6);
-  transition: left 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
-}
+
 
 
 
@@ -275,6 +261,10 @@ body {
   color: #d4d4d4; /* VSCode default text */
   font-weight: 600;
   text-shadow: 0 0 2px rgba(86, 156, 214, 0.3);
+  text-decoration: underline;
+  text-decoration-color: #569cd6; /* VSCode blue */
+  text-decoration-thickness: 2px;
+  text-underline-offset: 2px;
 }
 
 .char.error-char {
@@ -292,14 +282,7 @@ body {
 
 
 
-@keyframes cursor-blink {
-  0%, 50% {
-    opacity: 1;
-  }
-  51%, 100% {
-    opacity: 0.7;
-  }
-}
+
 
 /* Input container */
 .input-container {

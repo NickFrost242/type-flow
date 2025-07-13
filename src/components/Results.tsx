@@ -45,6 +45,12 @@ const Results: React.FC<ResultsProps> = ({ results, onStartNewTest }) => {
         </div>
 
         <div className="result-card">
+          <div className="result-value">{results.highestWPM}</div>
+          <div className="result-label">Highest WPM</div>
+          <div className="result-rating">Peak Speed</div>
+        </div>
+
+        <div className="result-card">
           <div className="result-value">{results.accuracy}%</div>
           <div className="result-label">Accuracy</div>
           <div className="result-rating">{getAccuracyRating(results.accuracy)}</div>

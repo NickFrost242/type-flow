@@ -11,6 +11,7 @@ export interface TestResult {
   correctWords: number;
   timeElapsed: number;
   errors: number;
+  highestWPM: number;
 }
 
 function App() {
