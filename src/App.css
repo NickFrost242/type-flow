@@ -611,7 +611,7 @@ body {
 /* Touch device optimizations */
 @media (hover: none) and (pointer: coarse) {
   .words-display {
-    cursor: pointer;
+    cursor: none !important;
     -webkit-tap-highlight-color: transparent;
   }
 
@@ -621,6 +621,15 @@ body {
 
   .words-display:active {
     background: #2a2a2a;
+  }
+
+  /* Hide cursor on mobile */
+  .words-container {
+    cursor: none !important;
+  }
+
+  .char {
+    cursor: none !important;
   }
 
   /* Larger touch targets */
