@@ -18,14 +18,26 @@ const TypingTest: React.FC<TypingTestProps> = ({ onTestComplete }) => {
   const [correctCharacters, setCorrectCharacters] = useState(0);
   const [highestWPM, setHighestWPM] = useState(0);
   const [isTestComplete, setIsTestComplete] = useState(false);
-
   const [isTyping, setIsTyping] = useState(false);
-
+  const [isMobile, setIsMobile] = useState(false);
+  const [inputValue, setInputValue] = useState('');
 
   const [typingHistory, setTypingHistory] = useState<{ [key: string]: boolean }>({});
   const [recentWords, setRecentWords] = useState<{ word: string; timestamp: number }[]>([]);
   const wordsContainerRef = useRef<HTMLDivElement>(null);
   const charRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const mobileInputRef = useRef<HTMLInputElement>(null);
+
+  // Detect mobile device
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const generateWords = useCallback(() => {
     const newWords: string[] = [];
@@ -40,8 +52,6 @@ const TypingTest: React.FC<TypingTestProps> = ({ onTestComplete }) => {
   useEffect(() => {
     generateWords();
   }, [generateWords]);
-
-
 
   // Helper function to get global character index
   const getGlobalCharIndex = useCallback((wordIndex: number, charIndex: number): number => {
@@ -68,11 +78,11 @@ const TypingTest: React.FC<TypingTestProps> = ({ onTestComplete }) => {
         const containerCenter = containerRect.left + containerRect.width / 2;
         const charCenter = charRect.left + charRect.width / 2;
 
-                 // If character is past center, scroll text to keep it visible
-         if (charCenter > containerCenter) {
-           const offset = charCenter - containerCenter;
-           container.scrollLeft += offset;
-         }
+        // If character is past center, scroll text to keep it visible
+        if (charCenter > containerCenter) {
+          const offset = charCenter - containerCenter;
+          container.scrollLeft += offset;
+        }
       });
     }
   }, [currentWordIndex, currentCharIndex, getGlobalCharIndex]);
@@ -146,78 +156,100 @@ const TypingTest: React.FC<TypingTestProps> = ({ onTestComplete }) => {
     onTestComplete(result);
   }, [startTime, correctWords, currentWordIndex, errors, calculateWPMFromCharacters, calculateAccuracy, onTestComplete, highestWPM, correctCharacters]);
 
-  // Add keyboard event listeners
-  useEffect(() => {
-    const handleKeyPress = (e: KeyboardEvent) => {
-      if (isTestComplete) return;
+  // Handle character input (works for both keyboard and mobile)
+  const handleCharacterInput = useCallback((typedChar: string) => {
+    if (isTestComplete) return;
 
-      // Prevent default behavior for typing characters
-      e.preventDefault();
+    setIsTyping(true);
 
+    if (!startTime) {
+      setStartTime(Date.now());
+    }
 
+    // Get the current character that should be typed
+    const currentWord = words[currentWordIndex];
+    if (!currentWord) return; // Safety check
 
-      setIsTyping(true);
+    const expectedChar = currentWord[currentCharIndex];
 
-      if (!startTime) {
-        setStartTime(Date.now());
+    // Check if word is complete and user typed a space
+    if (currentCharIndex >= currentWord.length && typedChar === ' ') {
+      // Word is complete and space was typed - move to next word
+      setCorrectWords(prev => prev + 1);
+      setCurrentWordIndex(prev => prev + 1);
+      setCurrentCharIndex(0);
+      
+      // Count the space as a correct character
+      setCorrectCharacters(prev => prev + 1);
+      setTotalCharacters(prev => prev + 1);
+      
+      // Add word to recent words for rolling WPM calculation
+      setRecentWords(prev => [...prev, { word: currentWord, timestamp: Date.now() }]);
+
+      // Add more words if we're running low
+      if (currentWordIndex >= words.length - 30) {
+        addMoreWords();
       }
+      return;
+    }
 
-      // Get the current character that should be typed
-      const currentWord = words[currentWordIndex];
-      if (!currentWord) return; // Safety check
+    // Check if the typed character is correct
+    if (typedChar === expectedChar) {
+      // Correct character - move to next character
+      setTypingHistory(prev => ({
+        ...prev,
+        [`${currentWordIndex}-${currentCharIndex}`]: true
+      }));
+      setCurrentCharIndex(prev => prev + 1);
+      setCorrectCharacters(prev => prev + 1);
+      setTotalCharacters(prev => prev + 1);
 
-      const expectedChar = currentWord[currentCharIndex];
-      const typedChar = e.key;
+      // If word is complete, wait for space
+      if (currentCharIndex + 1 >= currentWord.length) {
+        // Word is complete, but don't advance yet - wait for space
+      }
+    } else if (typedChar === ' ') {
+      // Wrong space - count as error but don't advance
+      setErrors(prev => prev + 1);
+      setTotalCharacters(prev => prev + 1);
+    } else if (typedChar) {
+      // Wrong character (but not space) - show error and don't advance
+      setTypingHistory(prev => ({
+        ...prev,
+        [`${currentWordIndex}-${currentCharIndex}`]: false
+      }));
+      setErrors(prev => prev + 1);
+      setTotalCharacters(prev => prev + 1);
+    }
+  }, [currentWordIndex, currentCharIndex, words, isTestComplete, startTime, addMoreWords]);
 
-             // Check if word is complete and user typed a space
-       if (currentCharIndex >= currentWord.length && typedChar === ' ') {
-         // Word is complete and space was typed - move to next word
-         setCorrectWords(prev => prev + 1);
-         setCurrentWordIndex(prev => prev + 1);
-         setCurrentCharIndex(0);
-         
-         // Count the space as a correct character
-         setCorrectCharacters(prev => prev + 1);
-         setTotalCharacters(prev => prev + 1);
-         
-         // Add word to recent words for rolling WPM calculation
-         setRecentWords(prev => [...prev, { word: currentWord, timestamp: Date.now() }]);
- 
-         // Add more words if we're running low
-         if (currentWordIndex >= words.length - 30) {
-           addMoreWords();
-         }
-         return;
-       }
+  // Mobile input handler
+  const handleMobileInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    const lastChar = value[value.length - 1];
+    
+    if (lastChar) {
+      handleCharacterInput(lastChar);
+    }
+    
+    // Reset input value to keep it empty
+    setInputValue('');
+  }, [handleCharacterInput]);
 
-             // Check if the typed character is correct
-       if (typedChar === expectedChar) {
-         // Correct character - move to next character
-         setTypingHistory(prev => ({
-           ...prev,
-           [`${currentWordIndex}-${currentCharIndex}`]: true
-         }));
-         setCurrentCharIndex(prev => prev + 1);
-         setCorrectCharacters(prev => prev + 1);
-         setTotalCharacters(prev => prev + 1);
- 
-         // If word is complete, wait for space
-         if (currentCharIndex + 1 >= currentWord.length) {
-           // Word is complete, but don't advance yet - wait for space
-         }
-       } else if (typedChar === ' ') {
-         // Wrong space - count as error but don't advance
-         setErrors(prev => prev + 1);
-         setTotalCharacters(prev => prev + 1);
-       } else if (typedChar) {
-         // Wrong character (but not space) - show error and don't advance
-         setTypingHistory(prev => ({
-           ...prev,
-           [`${currentWordIndex}-${currentCharIndex}`]: false
-         }));
-         setErrors(prev => prev + 1);
-         setTotalCharacters(prev => prev + 1);
-       }
+  // Focus mobile input when test starts
+  const focusMobileInput = useCallback(() => {
+    if (isMobile && mobileInputRef.current) {
+      mobileInputRef.current.focus();
+    }
+  }, [isMobile]);
+
+  // Add keyboard event listeners (for desktop)
+  useEffect(() => {
+    if (isMobile) return; // Skip keyboard events on mobile
+
+    const handleKeyPress = (e: KeyboardEvent) => {
+      e.preventDefault();
+      handleCharacterInput(e.key);
     };
 
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -234,7 +266,14 @@ const TypingTest: React.FC<TypingTestProps> = ({ onTestComplete }) => {
       document.removeEventListener('keypress', handleKeyPress);
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [currentWordIndex, currentCharIndex, words, isTestComplete, startTime, addMoreWords, completeTest]);
+  }, [isMobile, handleCharacterInput, completeTest]);
+
+  // Focus mobile input when typing starts
+  useEffect(() => {
+    if (isTyping && isMobile) {
+      focusMobileInput();
+    }
+  }, [isTyping, isMobile, focusMobileInput]);
 
   // Timer effect
   useEffect(() => {
@@ -265,10 +304,6 @@ const TypingTest: React.FC<TypingTestProps> = ({ onTestComplete }) => {
     setRecentWords(prev => prev.filter(word => now - word.timestamp < windowMs));
   }, [timeElapsed]); // Run cleanup every time timer updates
 
-
-
-
-
   const avgWPM = startTime ? calculateWPMFromCharacters(correctCharacters, timeElapsed) : 0;
   const currentWPM = calculateRollingWPM();
   const currentAccuracy = totalCharacters > 0 ? Math.round((correctCharacters / totalCharacters) * 100) : 100;
@@ -281,9 +316,37 @@ const TypingTest: React.FC<TypingTestProps> = ({ onTestComplete }) => {
     }
   }, [currentWPM, highestWPM, correctCharacters]);
 
-
   return (
     <div className="typing-test">
+      {/* Hidden mobile input for keyboard handling */}
+      {isMobile && (
+        <input
+          ref={mobileInputRef}
+          type="text"
+          value={inputValue}
+          onChange={handleMobileInput}
+          onKeyDown={(e) => {
+            if (e.key === 'Escape' || e.key === 'Enter') {
+              e.preventDefault();
+              completeTest();
+            }
+          }}
+          style={{
+            position: 'absolute',
+            opacity: 0,
+            pointerEvents: 'none',
+            width: '1px',
+            height: '1px',
+            border: 'none',
+            background: 'transparent'
+          }}
+          autoComplete="off"
+          autoCorrect="off"
+          autoCapitalize="off"
+          spellCheck="false"
+        />
+      )}
+
       <div className="test-header">
         <div className="stats">
           <div className="stat">
@@ -308,7 +371,7 @@ const TypingTest: React.FC<TypingTestProps> = ({ onTestComplete }) => {
         </button>
       </div>
 
-      <div className="words-display">
+      <div className="words-display" onClick={isMobile ? focusMobileInput : undefined}>
         <div
           ref={wordsContainerRef}
           className={`words-container ${isTyping ? 'typing-active' : ''}`}
@@ -343,13 +406,16 @@ const TypingTest: React.FC<TypingTestProps> = ({ onTestComplete }) => {
               <span className="word-space"> </span>
             </span>
           ))}
-       
-                 </div>
-
+        </div>
       </div>
 
       <div className="test-instructions">
-        <p>Start typing to begin the test. Press ESC, Enter, or click "Complete Test" to finish.</p>
+        <p>
+          {isMobile 
+            ? "Tap the text area to start typing. Press ESC, Enter, or click 'Complete Test' to finish."
+            : "Start typing to begin the test. Press ESC, Enter, or click 'Complete Test' to finish."
+          }
+        </p>
       </div>
     </div>
   );

@@ -465,7 +465,7 @@ body {
   
   .welcome-screen {
     padding: 2rem 1rem;
-    margin: 1rem;
+    margin: 1rem auto;
   }
   
   .welcome-screen h2 {
@@ -473,16 +473,17 @@ body {
   }
   
   .typing-test {
-    padding: 1.5rem;
+    padding: 1rem;
   }
   
   .test-header {
     flex-direction: column;
     align-items: stretch;
+    gap: 1rem;
   }
   
   .stats {
-    justify-content: center;
+    justify-content: space-around;
     gap: 1rem;
   }
   
@@ -496,31 +497,71 @@ body {
   
   .words-display {
     padding: 1.5rem;
-    font-size: 1.2rem;
     min-height: 100px;
     max-height: 100px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
   }
-  
+
+  .words-display:active {
+    background: #2a2a2a;
+  }
+
+  .words-container {
+    font-size: 1.2rem;
+    line-height: 1.6;
+  }
+
   .results-grid {
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-template-columns: 1fr;
     gap: 1rem;
   }
   
   .result-value {
-    font-size: 2rem;
+    font-size: 1.8rem;
   }
   
   .results {
-    padding: 1.5rem;
+    padding: 1rem;
   }
   
   .results-header h2 {
-    font-size: 2rem;
+    font-size: 1.8rem;
+  }
+
+  /* Mobile touch improvements */
+  .complete-button {
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    min-height: 44px; /* Minimum touch target size */
+  }
+
+  .start-button {
+    padding: 1.2rem 2.5rem;
+    font-size: 1.2rem;
+    min-height: 48px; /* Minimum touch target size */
+  }
+
+  /* Improve touch targets */
+  .char {
+    min-width: 1.2em;
+    min-height: 1.2em;
+  }
+
+  /* Mobile-specific word spacing */
+  .word {
+    margin-right: 0.3rem;
+  }
+
+  .word-space {
+    margin-right: 0.3rem;
   }
 }
 
 @media (max-width: 480px) {
   .stats {
+    grid-template-columns: 2fr 2fr;
     gap: 0.5rem;
   }
   
@@ -534,12 +575,77 @@ body {
   
   .words-display {
     padding: 1rem;
-    font-size: 1.1rem;
     min-height: 80px;
     max-height: 80px;
+    font-size: 1.1rem;
   }
-  
+
+  .words-container {
+    font-size: 1.1rem;
+    line-height: 1.5;
+  }
+
   .results-grid {
     grid-template-columns: 1fr;
+    gap: 0.8rem;
+  }
+
+  /* Smaller touch targets for very small screens */
+  .complete-button {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+  }
+
+  .start-button {
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+  }
+
+  /* Adjust character spacing for very small screens */
+  .char {
+    min-width: 1em;
+    min-height: 1em;
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .words-display {
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .words-display:hover {
+    background: #1e1e1e;
+  }
+
+  .words-display:active {
+    background: #2a2a2a;
+  }
+
+  /* Larger touch targets */
+  .complete-button,
+  .start-button {
+    min-height: 44px;
+  }
+
+  /* Prevent text selection on touch devices */
+  .words-container {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  /* Enable text selection only when typing */
+  .words-container.typing-active {
+    -webkit-touch-callout: default;
+    -webkit-user-select: text;
+    -khtml-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
   }
 }
