@@ -649,3 +649,42 @@ body {
     user-select: text;
   }
 }
+
+/* Mobile start indicator */
+.mobile-start-indicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(14, 99, 156, 0.9);
+  color: white;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  text-align: center;
+  z-index: 10;
+  pointer-events: none;
+  animation: pulse 2s infinite;
+}
+
+.mobile-start-indicator p {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.8;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+  100% {
+    opacity: 0.8;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+/* Mobile-specific improvements */
