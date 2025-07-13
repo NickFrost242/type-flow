@@ -417,7 +417,9 @@ const TypingTest: React.FC<TypingTestProps> = ({ onTestComplete }) => {
               background: 'transparent',
               fontSize: '16px', // Prevents zoom on iOS
               zIndex: 1000,
-              cursor: 'text'
+              cursor: 'none',
+              caretColor: 'transparent',
+              color: 'transparent'
             }}
             autoComplete="off"
             autoCorrect="off"

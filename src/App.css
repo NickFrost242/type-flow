@@ -632,6 +632,13 @@ body {
     cursor: none !important;
   }
 
+  /* Hide cursor on input fields */
+  input {
+    cursor: none !important;
+    caret-color: transparent !important;
+    color: transparent !important;
+  }
+
   /* Larger touch targets */
   .complete-button,
   .start-button {
