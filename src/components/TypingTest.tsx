@@ -345,6 +345,7 @@ const TypingTest: React.FC<TypingTestProps> = ({ onTestComplete }) => {
               completeTest();
             }
           }}
+
           onFocus={() => {
             // Ensure the input stays focused for mobile keyboard
             if (mobileInputRef.current) {
@@ -406,7 +407,6 @@ const TypingTest: React.FC<TypingTestProps> = ({ onTestComplete }) => {
           Complete Test
         </button>
       </div>
-
       <div className="words-display" onClick={handleWordsDisplayClick}>
         {isMobile && !startTime && (
           <div className="mobile-start-indicator">
