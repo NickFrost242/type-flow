@@ -32,7 +32,7 @@ const TypingTest: React.FC<TypingTestProps> = ({ onTestComplete }) => {
     for (let i = 0; i < 100; i++) {
       newWords.push(WORD_LIST[Math.floor(Math.random() * WORD_LIST.length)]);
     }
-    console.log('Generated words:', newWords.slice(0, 5)); // Debug log
+
     setWords(newWords);
   }, []);
 
@@ -168,7 +168,7 @@ const TypingTest: React.FC<TypingTestProps> = ({ onTestComplete }) => {
       // Prevent default behavior for typing characters
       e.preventDefault();
 
-      console.log('Key pressed:', e.key); // Debug log
+
 
       setIsTyping(true);
 
