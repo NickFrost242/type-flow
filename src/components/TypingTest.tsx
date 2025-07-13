@@ -239,9 +239,23 @@ const TypingTest: React.FC<TypingTestProps> = ({ onTestComplete }) => {
   // Focus mobile input when test starts
   const focusMobileInput = useCallback(() => {
     if (isMobile && mobileInputRef.current) {
-      mobileInputRef.current.focus();
+      // Force focus with a slight delay for iOS
+      setTimeout(() => {
+        if (mobileInputRef.current) {
+          mobileInputRef.current.focus();
+          // Trigger a click to ensure iOS keyboard appears
+          mobileInputRef.current.click();
+        }
+      }, 50);
     }
   }, [isMobile]);
+
+  // Handle words display click for mobile
+  const handleWordsDisplayClick = useCallback(() => {
+    if (isMobile) {
+      focusMobileInput();
+    }
+  }, [isMobile, focusMobileInput]);
 
   // Add keyboard event listeners (for desktop)
   useEffect(() => {
@@ -331,19 +345,42 @@ const TypingTest: React.FC<TypingTestProps> = ({ onTestComplete }) => {
               completeTest();
             }
           }}
+
+          onFocus={() => {
+            // Ensure the input stays focused for mobile keyboard
+            if (mobileInputRef.current) {
+              mobileInputRef.current.focus();
+            }
+          }}
+          onBlur={() => {
+            // Refocus if the user is still typing
+            if (isTyping && !isTestComplete) {
+              setTimeout(() => {
+                if (mobileInputRef.current) {
+                  mobileInputRef.current.focus();
+                }
+              }, 100);
+            }
+          }}
           style={{
             position: 'absolute',
-            opacity: 0,
-            pointerEvents: 'none',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            opacity: 0.01, // Very slightly visible for iOS
             width: '1px',
             height: '1px',
             border: 'none',
-            background: 'transparent'
+            background: 'transparent',
+            fontSize: '16px', // Prevents zoom on iOS
+            zIndex: 1000
           }}
           autoComplete="off"
           autoCorrect="off"
           autoCapitalize="off"
           spellCheck="false"
+          inputMode="text"
+          enterKeyHint="done"
         />
       )}
 
@@ -370,8 +407,12 @@ const TypingTest: React.FC<TypingTestProps> = ({ onTestComplete }) => {
           Complete Test
         </button>
       </div>
-
-      <div className="words-display" onClick={isMobile ? focusMobileInput : undefined}>
+      <div className="words-display" onClick={handleWordsDisplayClick}>
+        {isMobile && !startTime && (
+          <div className="mobile-start-indicator">
+            <p>Tap here to start typing</p>
+          </div>
+        )}
         <div
           ref={wordsContainerRef}
           className={`words-container ${isTyping ? 'typing-active' : ''}`}
