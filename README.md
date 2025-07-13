@@ -59,8 +59,8 @@ The app tracks several key metrics:
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
-cd typerace
+git clone https://github.com/NickFrost242/typeflow.git
+cd typeflow
 ```
 
 2. Install dependencies:
