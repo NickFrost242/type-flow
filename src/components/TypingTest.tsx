@@ -18,7 +18,7 @@ const TypingTest: React.FC<TypingTestProps> = ({ onTestComplete }) => {
   const [correctCharacters, setCorrectCharacters] = useState(0);
   const [highestWPM, setHighestWPM] = useState(0);
   const [isTestComplete, setIsTestComplete] = useState(false);
-  const [containerWidth, setContainerWidth] = useState(800);
+
   const [isTyping, setIsTyping] = useState(false);
 
 
@@ -41,12 +41,7 @@ const TypingTest: React.FC<TypingTestProps> = ({ onTestComplete }) => {
     generateWords();
   }, [generateWords]);
 
-  // Set container width when component mounts
-  useEffect(() => {
-    if (wordsContainerRef.current) {
-      setContainerWidth(wordsContainerRef.current.offsetWidth);
-    }
-  }, []);
+
 
   // Helper function to get global character index
   const getGlobalCharIndex = useCallback((wordIndex: number, charIndex: number): number => {
@@ -158,7 +153,7 @@ const TypingTest: React.FC<TypingTestProps> = ({ onTestComplete }) => {
     };
 
     onTestComplete(result);
-  }, [startTime, correctWords, currentWordIndex, errors, calculateWPM, calculateAccuracy, onTestComplete]);
+  }, [startTime, correctWords, currentWordIndex, errors, calculateWPM, calculateAccuracy, onTestComplete, highestWPM]);
 
   // Add keyboard event listeners
   useEffect(() => {
@@ -285,7 +280,6 @@ const TypingTest: React.FC<TypingTestProps> = ({ onTestComplete }) => {
 
   const avgWPM = startTime ? calculateWPMFromCharacters(correctCharacters, timeElapsed) : 0;
   const currentWPM = calculateRollingWPM();
-  const rawWPM = startTime ? calculateWPMFromCharacters(totalCharacters, timeElapsed) : 0;
   const currentAccuracy = totalCharacters > 0 ? Math.round((correctCharacters / totalCharacters) * 100) : 100;
 
   // Track highest WPM achieved (only after minimum characters typed)
