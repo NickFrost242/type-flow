@@ -75,6 +75,36 @@ npm start
 
 4. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
+### Deployment
+
+#### GitHub Pages (Recommended)
+
+1. **Update the homepage URL** in `package.json`:
+   ```json
+   "homepage": "https://yourusername.github.io/typerace"
+   ```
+
+2. **Install gh-pages** (if not already installed):
+   ```bash
+   npm install --save-dev gh-pages
+   ```
+
+3. **Deploy manually**:
+   ```bash
+   npm run deploy
+   ```
+
+4. **Automatic deployment**: The GitHub Actions workflow will automatically deploy when you push to the main branch.
+
+#### Manual Build
+
+To create a production build:
+```bash
+npm run build
+```
+
+The build files will be created in the `build/` directory.
+
 ### Available Scripts
 
 - `npm start` - Runs the app in development mode
