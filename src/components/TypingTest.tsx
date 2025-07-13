@@ -85,15 +85,6 @@ const TypingTest: React.FC<TypingTestProps> = ({ onTestComplete }) => {
     setWords(prev => [...prev, ...newWords]);
   }, []);
 
-  const calculateWPM = useCallback((correctWords: number, timeElapsed: number): number => {
-    if (timeElapsed === 0) return 0;
-    // Normalize to 60 seconds - calculate WPM as if the test was exactly 60 seconds
-    const actualMinutes = timeElapsed / 60000; // Convert milliseconds to minutes
-    const wordsPerMinute = correctWords / actualMinutes;
-    // This is already normalized to 60 seconds (WPM = words per minute)
-    return Math.round(wordsPerMinute);
-  }, []);
-
   const calculateWPMFromCharacters = useCallback((characters: number, timeElapsed: number): number => {
     if (timeElapsed === 0) return 0;
     const minutes = timeElapsed / 60000;
