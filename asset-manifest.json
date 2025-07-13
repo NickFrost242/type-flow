@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.css": "/typeflow/static/css/main.2ba4eee8.css",
-    "main.js": "/typeflow/static/js/main.54a47e8b.js",
-    "index.html": "/typeflow/index.html",
-    "main.2ba4eee8.css.map": "/typeflow/static/css/main.2ba4eee8.css.map",
-    "main.54a47e8b.js.map": "/typeflow/static/js/main.54a47e8b.js.map"
+    "main.css": "/type-flow/static/css/main.2ba4eee8.css",
+    "main.js": "/type-flow/static/js/main.54a47e8b.js",
+    "index.html": "/type-flow/index.html",
+    "main.2ba4eee8.css.map": "/type-flow/static/css/main.2ba4eee8.css.map",
+    "main.54a47e8b.js.map": "/type-flow/static/js/main.54a47e8b.js.map"
   },
   "entrypoints": [
     "static/css/main.2ba4eee8.css",
