@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/type-flow/static/css/main.1dbca95e.css",
-    "main.js": "/type-flow/static/js/main.2c027a4f.js",
+    "main.js": "/type-flow/static/js/main.333865a0.js",
     "index.html": "/type-flow/index.html",
     "main.1dbca95e.css.map": "/type-flow/static/css/main.1dbca95e.css.map",
-    "main.2c027a4f.js.map": "/type-flow/static/js/main.2c027a4f.js.map"
+    "main.333865a0.js.map": "/type-flow/static/js/main.333865a0.js.map"
   },
   "entrypoints": [
     "static/css/main.1dbca95e.css",
-    "static/js/main.2c027a4f.js"
+    "static/js/main.333865a0.js"
   ]
 }
