@@ -153,7 +153,7 @@ const TypingTest: React.FC<TypingTestProps> = ({ onTestComplete }) => {
     };
 
     onTestComplete(result);
-  }, [startTime, correctWords, currentWordIndex, errors, calculateWPM, calculateAccuracy, onTestComplete, highestWPM]);
+  }, [startTime, correctWords, currentWordIndex, errors, calculateWPMFromCharacters, calculateAccuracy, onTestComplete, highestWPM, correctCharacters]);
 
   // Add keyboard event listeners
   useEffect(() => {
