@@ -2,7 +2,7 @@
   "name": "typeflow",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://NickFrost242.github.io/typeflow",
+  "homepage": "https://NickFrost242.github.io/type-flow",
   "dependencies": {
     "@types/node": "^16.18.126",
     "@types/react": "^19.1.8",
