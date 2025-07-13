@@ -239,14 +239,28 @@ const TypingTest: React.FC<TypingTestProps> = ({ onTestComplete }) => {
   // Focus mobile input when test starts
   const focusMobileInput = useCallback(() => {
     if (isMobile && mobileInputRef.current) {
-      // Force focus with a slight delay for iOS
+      // Multiple strategies to ensure focus works on all mobile devices
+      const input = mobileInputRef.current;
+      
+      // Strategy 1: Direct focus
+      input.focus();
+      
+      // Strategy 2: Click to focus (for iOS)
       setTimeout(() => {
-        if (mobileInputRef.current) {
-          mobileInputRef.current.focus();
-          // Trigger a click to ensure iOS keyboard appears
-          mobileInputRef.current.click();
-        }
+        input.click();
+        input.focus();
       }, 50);
+      
+      // Strategy 3: Touch event simulation
+      setTimeout(() => {
+        const touchEvent = new TouchEvent('touchstart', {
+          bubbles: true,
+          cancelable: true,
+          view: window
+        });
+        input.dispatchEvent(touchEvent);
+        input.focus();
+      }, 100);
     }
   }, [isMobile]);
 
@@ -332,58 +346,6 @@ const TypingTest: React.FC<TypingTestProps> = ({ onTestComplete }) => {
 
   return (
     <div className="typing-test">
-      {/* Hidden mobile input for keyboard handling */}
-      {isMobile && (
-        <input
-          ref={mobileInputRef}
-          type="text"
-          value={inputValue}
-          onChange={handleMobileInput}
-          onKeyDown={(e) => {
-            if (e.key === 'Escape' || e.key === 'Enter') {
-              e.preventDefault();
-              completeTest();
-            }
-          }}
-
-          onFocus={() => {
-            // Ensure the input stays focused for mobile keyboard
-            if (mobileInputRef.current) {
-              mobileInputRef.current.focus();
-            }
-          }}
-          onBlur={() => {
-            // Refocus if the user is still typing
-            if (isTyping && !isTestComplete) {
-              setTimeout(() => {
-                if (mobileInputRef.current) {
-                  mobileInputRef.current.focus();
-                }
-              }, 100);
-            }
-          }}
-          style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            opacity: 0.01, // Very slightly visible for iOS
-            width: '1px',
-            height: '1px',
-            border: 'none',
-            background: 'transparent',
-            fontSize: '16px', // Prevents zoom on iOS
-            zIndex: 1000
-          }}
-          autoComplete="off"
-          autoCorrect="off"
-          autoCapitalize="off"
-          spellCheck="false"
-          inputMode="text"
-          enterKeyHint="done"
-        />
-      )}
-
       <div className="test-header">
         <div className="stats">
           <div className="stat">
@@ -407,7 +369,65 @@ const TypingTest: React.FC<TypingTestProps> = ({ onTestComplete }) => {
           Complete Test
         </button>
       </div>
-      <div className="words-display" onClick={handleWordsDisplayClick}>
+
+      <div 
+        className="words-display" 
+        onClick={handleWordsDisplayClick}
+        tabIndex={isMobile ? 0 : undefined}
+        onFocus={isMobile ? focusMobileInput : undefined}
+      >
+        {/* Hidden mobile input for keyboard handling */}
+        {isMobile && (
+          <input
+            ref={mobileInputRef}
+            type="text"
+            value={inputValue}
+            onChange={handleMobileInput}
+            onKeyDown={(e) => {
+              if (e.key === 'Escape' || e.key === 'Enter') {
+                e.preventDefault();
+                completeTest();
+              }
+            }}
+            onFocus={() => {
+              // Ensure the input stays focused for mobile keyboard
+              if (mobileInputRef.current) {
+                mobileInputRef.current.focus();
+              }
+            }}
+            onBlur={() => {
+              // Refocus if the user is still typing
+              if (isTyping && !isTestComplete) {
+                setTimeout(() => {
+                  if (mobileInputRef.current) {
+                    mobileInputRef.current.focus();
+                  }
+                }, 100);
+              }
+            }}
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              opacity: 0.1, // More visible for better focus
+              width: '10px',
+              height: '10px',
+              border: '1px solid transparent',
+              background: 'transparent',
+              fontSize: '16px', // Prevents zoom on iOS
+              zIndex: 1000,
+              cursor: 'text'
+            }}
+            autoComplete="off"
+            autoCorrect="off"
+            autoCapitalize="off"
+            spellCheck="false"
+            inputMode="text"
+            enterKeyHint="done"
+          />
+        )}
+        
         {isMobile && !startTime && (
           <div className="mobile-start-indicator">
             <p>Tap here to start typing</p>
