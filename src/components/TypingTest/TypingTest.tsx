@@ -88,8 +88,10 @@ function TypingTest({ onTestComplete }: TypingTestProps) {
 
     setIsTyping(true);
 
+    let now: number | null = null;
     if (!startTime) {
-      setStartTime(Date.now());
+      now = Date.now();
+      setStartTime(now);
     }
 
     const currentWord = words[typingState.currentWordIndex];
@@ -153,6 +155,8 @@ function TypingTest({ onTestComplete }: TypingTestProps) {
     setTypingHistory,
     setRecentWords,
     addMoreWords,
+    setIsTyping,
+    setStartTime,
   ]);
 
   // Complete test
@@ -258,10 +262,9 @@ function TypingTest({ onTestComplete }: TypingTestProps) {
   }, [recentWords, typingState.correctCharacters, typingState.highestWPM, calculateRollingWPM, updateTypingState]);
 
   // Memoized calculations
-  const avgWPM = useMemo(() => 
-    startTime ? calculateWPMFromCharacters(typingState.correctCharacters, timeElapsed) : 0,
-    [startTime, typingState.correctCharacters, timeElapsed, calculateWPMFromCharacters]
-  );
+  // Use liveElapsed for up-to-the-moment WPM
+  const liveElapsed = startTime ? Date.now() - startTime : 0;
+  const avgWPM = calculateWPMFromCharacters(typingState.correctCharacters, liveElapsed);
 
   const currentWPM = useMemo(() => 
     calculateRollingWPM(recentWords),
