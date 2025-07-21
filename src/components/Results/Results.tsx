@@ -1,5 +1,5 @@
 import React from 'react';
-import { TestResult } from '../App';
+import { TestResult } from '../../App';
 
 interface ResultsProps {
   results: TestResult;

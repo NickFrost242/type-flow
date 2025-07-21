@@ -1,6 +1,3 @@
-// Meditative and zen-focused word list for TypeFlow
-// Curated to promote calm, peaceful, and positive typing experience
-
 export const WORD_LIST = [
   // Nature and tranquility
   'peace', 'calm', 'serene', 'tranquil', 'gentle', 'soft', 'quiet', 'still', 'flow', 'drift',

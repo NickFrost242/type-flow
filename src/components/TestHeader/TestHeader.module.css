@@ -1,0 +1,88 @@
+/* TestHeader styles */
+.test-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.stats {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.stat {
+  text-align: center;
+  min-width: 80px;
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.9rem;
+  color: #858585; /* VSCode secondary text */
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.stat-value {
+  display: block;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #d4d4d4; /* VSCode default text */
+}
+
+.complete-button {
+  background: #0e639c; /* VSCode button blue */
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 4px; /* VSCode button radius */
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.complete-button:hover {
+  background: #1177bb; /* VSCode button hover */
+  transform: translateY(-1px);
+}
+
+@media (max-width: 768px) {
+  .test-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+  .stats {
+    justify-content: space-around;
+    gap: 1rem;
+  }
+  .stat {
+    min-width: 60px;
+  }
+  .stat-value {
+    font-size: 1.5rem;
+  }
+  .complete-button {
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    min-height: 44px;
+  }
+}
+
+@media (max-width: 480px) {
+  .stat {
+    min-width: 50px;
+  }
+  .stat-value {
+    font-size: 1.3rem;
+  }
+  .complete-button {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+  }
+} 
