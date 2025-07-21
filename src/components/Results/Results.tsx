@@ -6,7 +6,7 @@ interface ResultsProps {
   onStartNewTest: () => void;
 }
 
-const Results: React.FC<ResultsProps> = ({ results, onStartNewTest }) => {
+function Results({ results, onStartNewTest }: ResultsProps) {
   const formatTime = (milliseconds: number): string => {
     const seconds = Math.round(milliseconds / 1000);
     const minutes = Math.floor(seconds / 60);

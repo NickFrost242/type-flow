@@ -16,7 +16,7 @@ interface TypingTestProps {
   onTestComplete: (result: TestResult) => void;
 }
 
-const TypingTest: React.FC<TypingTestProps> = ({ onTestComplete }) => {
+function TypingTest({ onTestComplete }: TypingTestProps) {
   // Custom hooks
   const isMobile = useMobileDetection();
   const { words, addMoreWords, initializeWords } = useWordGeneration();
