@@ -1,6 +1,5 @@
-/* WordsDisplay styles */
 .words-display {
-  background: #1e1e1e; /* VSCode editor background */
+  background: #1e1e1e;
   border-radius: 8px;
   padding: 2rem;
   margin-bottom: 2rem;
@@ -8,7 +7,7 @@
   max-height: 120px;
   line-height: 1.8;
   font-size: 1.4rem;
-  border: 1px solid #3c3c3c; /* VSCode border */
+  border: 1px solid #3c3c3c;
   overflow: hidden;
   position: relative;
   font-family: 'Consolas', 'Monaco', 'Courier New', monospace;

@@ -1,4 +1,3 @@
-/* TestHeader styles */
 .test-header {
   display: flex;
   justify-content: space-between;
@@ -22,7 +21,7 @@
 .stat-label {
   display: block;
   font-size: 0.9rem;
-  color: #858585; /* VSCode secondary text */
+  color: #858585;
   font-weight: 500;
   margin-bottom: 0.5rem;
 }
@@ -31,23 +30,23 @@
   display: block;
   font-size: 1.8rem;
   font-weight: 700;
-  color: #d4d4d4; /* VSCode default text */
+  color: #d4d4d4;
 }
 
 .complete-button {
-  background: #0e639c; /* VSCode button blue */
+  background: #0e639c;
   color: white;
   border: none;
   padding: 0.75rem 1.5rem;
   font-size: 1rem;
   font-weight: 600;
-  border-radius: 4px; /* VSCode button radius */
+  border-radius: 4px;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .complete-button:hover {
-  background: #1177bb; /* VSCode button hover */
+  background: #1177bb;
   transform: translateY(-1px);
 }
 

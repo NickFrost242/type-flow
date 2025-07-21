@@ -1,7 +1,6 @@
-/* Header styles */
 .header {
-  background: #252526; /* VSCode title bar background */
-  border-bottom: 1px solid #3c3c3c; /* VSCode border color */
+  background: #252526;
+  border-bottom: 1px solid #3c3c3c;
   padding: 1rem 0;
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
 }
@@ -16,16 +15,16 @@
 .app-title {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #d4d4d4; /* VSCode default text color */
+  color: #d4d4d4;
   margin-bottom: 0.5rem;
 }
 
 .title-highlight {
-  color: #569cd6; /* VSCode blue accent */
+  color: #569cd6;
 }
 
 .app-subtitle {
   font-size: 1.1rem;
-  color: #858585; /* VSCode secondary text */
+  color: #858585;
   font-weight: 400;
 } 
