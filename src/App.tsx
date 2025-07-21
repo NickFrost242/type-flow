@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import './App.css';
-import TypingTest from './components/TypingTest';
-import Results from './components/Results';
-import Header from './components/Header';
+import TypingTest from './components/TypingTest/TypingTest';
+import Results from './components/Results/Results';
+import Header from './components/Header/Header';
 
 export interface TestResult {
   wpm: number;
