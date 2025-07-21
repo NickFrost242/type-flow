@@ -5,235 +5,16 @@ import TestHeader from '../TestHeader/TestHeader';
 import MobileInput from '../MobileInput/MobileInput';
 import WordsDisplay from '../WordsDisplay/WordsDisplay';
 import TestInstructions from '../TestInstructions/TestInstructions';
+import useMobileDetection from '../../hooks/useMobileDetection';
+import useWordGeneration from '../../hooks/useWordGeneration';
+import useWPMCalculations, { RecentWord } from '../../hooks/useWPMCalculations';
+import useTypingState, { TypingState, TypingHistory } from '../../hooks/useTypingState';
+import useTimer from '../../hooks/useTimer';
+import useMobileInput from '../../hooks/useMobileInput';
 
 interface TypingTestProps {
   onTestComplete: (result: TestResult) => void;
 }
-
-interface TypingState {
-  currentWordIndex: number;
-  currentCharIndex: number;
-  errors: number;
-  correctWords: number;
-  totalCharacters: number;
-  correctCharacters: number;
-  highestWPM: number;
-}
-
-interface TypingHistory {
-  [key: string]: boolean;
-}
-
-interface RecentWord {
-  word: string;
-  timestamp: number;
-}
-
-// Custom hook for mobile detection
-const useMobileDetection = () => {
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => {
-      const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-      const isSmallScreen = window.innerWidth <= 768;
-      setIsMobile(isMobileDevice || isSmallScreen);
-    };
-    
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  return isMobile;
-};
-
-// Custom hook for word generation
-const useWordGeneration = () => {
-  const [words, setWords] = useState<string[]>([]);
-
-  const generateWords = useCallback((count: number = 100) => {
-    const newWords: string[] = [];
-    for (let i = 0; i < count; i++) {
-      newWords.push(WORD_LIST[Math.floor(Math.random() * WORD_LIST.length)]);
-    }
-    return newWords;
-  }, []);
-
-  const addMoreWords = useCallback((count: number = 50) => {
-    const newWords = generateWords(count);
-    setWords(prev => [...prev, ...newWords]);
-  }, [generateWords]);
-
-  const initializeWords = useCallback(() => {
-    setWords(generateWords(100));
-  }, [generateWords]);
-
-  return { words, addMoreWords, initializeWords };
-};
-
-// Custom hook for WPM calculations
-const useWPMCalculations = () => {
-  const calculateWPMFromCharacters = useCallback((characters: number, timeElapsed: number): number => {
-    if (timeElapsed === 0) return 0;
-    const minutes = timeElapsed / 60000;
-    const words = characters / 5; // Standard: 5 characters = 1 word
-    return Math.round(words / minutes);
-  }, []);
-
-  const calculateAccuracy = useCallback((correctCharacters: number, totalCharacters: number): number => {
-    if (totalCharacters === 0) return 100;
-    return Math.round((correctCharacters / totalCharacters) * 100);
-  }, []);
-
-  const calculateRollingWPM = useCallback((recentWords: RecentWord[]): number => {
-    if (recentWords.length === 0) return 0;
-    
-    const now = Date.now();
-    const windowMs = 5000; // 5 second window
-    const recentWordsInWindow = recentWords.filter(word => now - word.timestamp < windowMs);
-    
-    if (recentWordsInWindow.length === 0) return 0;
-    
-    const oldestWord = recentWordsInWindow[0];
-    const timeSpan = now - oldestWord.timestamp;
-    
-    if (timeSpan < 1000) return 0; // Require at least 1 second
-    
-    const minutes = timeSpan / 60000;
-    const recentCharacters = recentWordsInWindow.reduce((total, word) => total + word.word.length, 0);
-    const words = recentCharacters / 5;
-    
-    return recentCharacters < 5 ? 0 : Math.round(words / minutes);
-  }, []);
-
-  return { calculateWPMFromCharacters, calculateAccuracy, calculateRollingWPM };
-};
-
-// Custom hook for typing state management
-const useTypingState = () => {
-  const [typingState, setTypingState] = useState<TypingState>({
-    currentWordIndex: 0,
-    currentCharIndex: 0,
-    errors: 0,
-    correctWords: 0,
-    totalCharacters: 0,
-    correctCharacters: 0,
-    highestWPM: 0,
-  });
-
-  const [typingHistory, setTypingHistory] = useState<TypingHistory>({});
-  const [recentWords, setRecentWords] = useState<RecentWord[]>([]);
-  const [isTyping, setIsTyping] = useState(false);
-
-  const updateTypingState = useCallback((updates: Partial<TypingState>) => {
-    setTypingState(prev => ({ ...prev, ...updates }));
-  }, []);
-
-  const resetTypingState = useCallback(() => {
-    setTypingState({
-      currentWordIndex: 0,
-      currentCharIndex: 0,
-      errors: 0,
-      correctWords: 0,
-      totalCharacters: 0,
-      correctCharacters: 0,
-      highestWPM: 0,
-    });
-    setTypingHistory({});
-    setRecentWords([]);
-    setIsTyping(false);
-  }, []);
-
-  return {
-    typingState,
-    typingHistory,
-    recentWords,
-    isTyping,
-    updateTypingState,
-    setTypingHistory,
-    setRecentWords,
-    setIsTyping,
-    resetTypingState,
-  };
-};
-
-// Custom hook for timer management
-const useTimer = (startTime: number | null, isTestComplete: boolean) => {
-  const [timeElapsed, setTimeElapsed] = useState(0);
-
-  useEffect(() => {
-    let interval: NodeJS.Timeout;
-    if (startTime && !isTestComplete) {
-      interval = setInterval(() => {
-        setTimeElapsed(Date.now() - startTime);
-      }, 100);
-    }
-    return () => clearInterval(interval);
-  }, [startTime, isTestComplete]);
-
-  const resetTimer = useCallback(() => {
-    setTimeElapsed(0);
-  }, []);
-
-  return { timeElapsed, resetTimer };
-};
-
-// Custom hook for mobile input handling
-const useMobileInput = (isMobile: boolean, handleCharacterInput: (char: string) => void, completeTest: () => void) => {
-  const [inputValue, setInputValue] = useState('');
-  const mobileInputRef = useRef<HTMLInputElement>(null);
-
-  const handleMobileInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    const lastChar = value[value.length - 1];
-    
-    if (lastChar) {
-      handleCharacterInput(lastChar);
-    }
-    
-    setInputValue('');
-  }, [handleCharacterInput]);
-
-  const focusMobileInput = useCallback(() => {
-    if (isMobile && mobileInputRef.current) {
-      const input = mobileInputRef.current;
-      
-      // Multiple strategies for reliable focus
-      input.focus();
-      
-      setTimeout(() => {
-        input.click();
-        input.focus();
-      }, 50);
-      
-      setTimeout(() => {
-        const touchEvent = new TouchEvent('touchstart', {
-          bubbles: true,
-          cancelable: true,
-          view: window,
-        });
-        input.dispatchEvent(touchEvent);
-        input.focus();
-      }, 100);
-    }
-  }, [isMobile]);
-
-  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Escape' || e.key === 'Enter') {
-      e.preventDefault();
-      completeTest();
-    }
-  }, [completeTest]);
-
-  return {
-    inputValue,
-    mobileInputRef,
-    handleMobileInput,
-    focusMobileInput,
-    handleKeyDown,
-  };
-};
 
 const TypingTest: React.FC<TypingTestProps> = ({ onTestComplete }) => {
   // Custom hooks
@@ -493,7 +274,6 @@ const TypingTest: React.FC<TypingTestProps> = ({ onTestComplete }) => {
 
   return (
     <div className="typing-test">
-      {/* Mobile Input */}
       {isMobile && (
         <MobileInput
           inputValue={inputValue}
@@ -505,7 +285,6 @@ const TypingTest: React.FC<TypingTestProps> = ({ onTestComplete }) => {
         />
       )}
 
-      {/* Test Header */}
       <TestHeader
         avgWPM={avgWPM}
         currentWPM={currentWPM}
@@ -529,7 +308,6 @@ const TypingTest: React.FC<TypingTestProps> = ({ onTestComplete }) => {
         onFocus={isMobile ? focusMobileInput : undefined}
       />
 
-      {/* Test Instructions */}
       <TestInstructions isMobile={isMobile} />
     </div>
   );

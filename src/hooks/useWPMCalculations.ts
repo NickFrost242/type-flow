@@ -18,19 +18,25 @@ const useWPMCalculations = () => {
     return Math.round((correctCharacters / totalCharacters) * 100);
   }, []);
 
+  // New version: WPM for the last 5 characters typed
   const calculateRollingWPM = useCallback((recentWords: RecentWord[]): number => {
-    if (recentWords.length === 0) return 0;
-    const now = Date.now();
-    const windowMs = 5000; // 5 second window
-    const recentWordsInWindow = recentWords.filter(word => now - word.timestamp < windowMs);
-    if (recentWordsInWindow.length === 0) return 0;
-    const oldestWord = recentWordsInWindow[0];
-    const timeSpan = now - oldestWord.timestamp;
-    if (timeSpan < 1000) return 0; // Require at least 1 second
+    // Flatten recentWords into an array of { char, timestamp }
+    const charTimestamps: number[] = [];
+    for (let i = 0; i < recentWords.length; i++) {
+      const word = recentWords[i];
+      for (let j = 0; j < word.word.length; j++) {
+        charTimestamps.push(word.timestamp);
+      }
+    }
+    if (charTimestamps.length < 5) return 0;
+    // Get the timestamp of the 5th most recent character
+    const lastIndex = charTimestamps.length - 1;
+    const fifthCharIndex = lastIndex - 4;
+    const timeSpan = charTimestamps[lastIndex] - charTimestamps[fifthCharIndex];
+    if (timeSpan <= 0) return 0;
     const minutes = timeSpan / 60000;
-    const recentCharacters = recentWordsInWindow.reduce((total, word) => total + word.word.length, 0);
-    const words = recentCharacters / 5;
-    return recentCharacters < 5 ? 0 : Math.round(words / minutes);
+    // 5 characters = 1 word
+    return Math.round(1 / minutes);
   }, []);
 
   return { calculateWPMFromCharacters, calculateAccuracy, calculateRollingWPM };
