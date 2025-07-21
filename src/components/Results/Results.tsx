@@ -1,5 +1,6 @@
 import React from 'react';
 import { TestResult } from '../../App';
+import styles from './Results.module.css';
 
 interface ResultsProps {
   results: TestResult;
@@ -31,59 +32,59 @@ function Results({ results, onStartNewTest }: ResultsProps) {
   };
 
   return (
-    <div className="results">
-      <div className="results-header">
+    <div className={styles.results}>
+      <div className={styles['results-header']}>
         <h2>Test Complete!</h2>
         <p>Here are your typing results</p>
       </div>
 
-      <div className="results-grid">
-        <div className="result-card primary">
-          <div className="result-value">{results.wpm}</div>
-          <div className="result-label">Words Per Minute</div>
-          <div className="result-rating">{getWPMRating(results.wpm)}</div>
+      <div className={styles['results-grid']}>
+        <div className={`${styles['result-card']} ${styles.primary}`}>
+          <div className={styles['result-value']}>{results.wpm}</div>
+          <div className={styles['result-label']}>Words Per Minute</div>
+          <div className={styles['result-rating']}>{getWPMRating(results.wpm)}</div>
         </div>
 
-        <div className="result-card">
-          <div className="result-value">{results.highestWPM}</div>
-          <div className="result-label">Highest WPM</div>
-          <div className="result-rating">Peak Speed</div>
+        <div className={styles['result-card']}>
+          <div className={styles['result-value']}>{results.highestWPM}</div>
+          <div className={styles['result-label']}>Highest WPM</div>
+          <div className={styles['result-rating']}>Peak Speed</div>
         </div>
 
-        <div className="result-card">
-          <div className="result-value">{results.accuracy}%</div>
-          <div className="result-label">Accuracy</div>
-          <div className="result-rating">{getAccuracyRating(results.accuracy)}</div>
+        <div className={styles['result-card']}>
+          <div className={styles['result-value']}>{results.accuracy}%</div>
+          <div className={styles['result-label']}>Accuracy</div>
+          <div className={styles['result-rating']}>{getAccuracyRating(results.accuracy)}</div>
         </div>
 
-        <div className="result-card">
-          <div className="result-value">{formatTime(results.timeElapsed)}</div>
-          <div className="result-label">Time</div>
+        <div className={styles['result-card']}>
+          <div className={styles['result-value']}>{formatTime(results.timeElapsed)}</div>
+          <div className={styles['result-label']}>Time</div>
         </div>
 
-        <div className="result-card">
-          <div className="result-value">{results.totalWords}</div>
-          <div className="result-label">Words Typed</div>
+        <div className={styles['result-card']}>
+          <div className={styles['result-value']}>{results.totalWords}</div>
+          <div className={styles['result-label']}>Words Typed</div>
         </div>
 
-        <div className="result-card">
-          <div className="result-value">{results.correctWords}</div>
-          <div className="result-label">Correct Words</div>
+        <div className={styles['result-card']}>
+          <div className={styles['result-value']}>{results.correctWords}</div>
+          <div className={styles['result-label']}>Correct Words</div>
         </div>
 
-        <div className="result-card">
-          <div className="result-value">{results.errors}</div>
-          <div className="result-label">Errors</div>
+        <div className={styles['result-card']}>
+          <div className={styles['result-value']}>{results.errors}</div>
+          <div className={styles['result-label']}>Errors</div>
         </div>
       </div>
 
-      <div className="results-actions">
-        <button className="new-test-button" onClick={onStartNewTest}>
+      <div className={styles['results-actions']}>
+        <button className={styles['new-test-button']} onClick={onStartNewTest}>
           Take Another Test
         </button>
       </div>
 
-      <div className="results-tips">
+      <div className={styles['results-tips']}>
         <h3>Tips to Improve Your Speed</h3>
         <ul>
           <li>Practice regularly with typing exercises</li>
@@ -95,6 +96,6 @@ function Results({ results, onStartNewTest }: ResultsProps) {
       </div>
     </div>
   );
-};
+}
 
 export default Results; 

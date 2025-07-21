@@ -11,6 +11,7 @@ import useWPMCalculations, { RecentWord } from '../../hooks/useWPMCalculations';
 import useTypingState, { TypingState, TypingHistory } from '../../hooks/useTypingState';
 import useTimer from '../../hooks/useTimer';
 import useMobileInput from '../../hooks/useMobileInput';
+import styles from './TypingTest.module.css';
 
 interface TypingTestProps {
   onTestComplete: (result: TestResult) => void;
@@ -273,7 +274,7 @@ function TypingTest({ onTestComplete }: TypingTestProps) {
   );
 
   return (
-    <div className="typing-test">
+    <div className={styles['typing-test']}>
       {isMobile && (
         <MobileInput
           inputValue={inputValue}

@@ -1,4 +1,5 @@
 import React from 'react';
+import styles from './MobileInput.module.css';
 
 interface MobileInputProps {
   inputValue: string;
@@ -24,6 +25,7 @@ function MobileInput({
       value={inputValue}
       onChange={handleMobileInput}
       onKeyDown={handleKeyDown}
+      className={styles['typing-input']}
       onFocus={() => {
         if (mobileInputRef.current) {
           mobileInputRef.current.focus();
@@ -37,22 +39,6 @@ function MobileInput({
             }
           }, 100);
         }
-      }}
-      style={{
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        opacity: 0.1,
-        width: '10px',
-        height: '10px',
-        border: '1px solid transparent',
-        background: 'transparent',
-        fontSize: '16px',
-        zIndex: 1000,
-        cursor: 'none',
-        caretColor: 'transparent',
-        color: 'transparent',
       }}
       autoComplete="off"
       autoCorrect="off"
